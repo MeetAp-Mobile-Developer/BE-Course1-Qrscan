@@ -8,7 +8,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/register-participant', function () {
-    return view('register-participant');
+    return view('register');
 });
 // Rute untuk menangani form pendaftaran peserta
 Route::post('/register', [ParticipantController::class, 'store'])->name('participants.store');
