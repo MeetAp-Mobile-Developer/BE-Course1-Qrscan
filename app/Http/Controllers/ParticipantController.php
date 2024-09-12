@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ParticipantRegistered;
 use App\Models\Participant;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Milon\Barcode\DNS2D;
 
 class ParticipantController extends Controller
@@ -27,9 +31,30 @@ class ParticipantController extends Controller
         $participant->email = $request->email;
         $participant->phone = $request->phone;
 
+        $qr_content = "meetap#" . Str::uuid();
+        $participant->qr_content = $qr_content;
+
         $result = $participant->save();
 
-        // TODO : bikin qr code dan PDF lalu kirim email
+        // make pdf
+        $background = url('assets/image/background-01.jpg');
+        $qr_content = "meetap-" . time();
+
+        $barcode = new DNS2D();
+        $qr_code = $barcode->getBarcodePNG($qr_content, 'QRCODE', 100, 100, [0, 0, 0], true);
+
+        $pdf = Pdf::loadHTML(view("participant.registration-card-pdf", compact("background", "qr_code", "participant")));
+        $pdf->setOption("is_remote_enabled", true);
+        $pdf->setPaper("a5", "potrait");
+
+        if (!is_dir(public_path("uploads/id_cards"))) {
+            mkdir(public_path("uploads/id_cards"));
+        }
+
+        $pdf->save(public_path("uploads/id_cards/" . $qr_content  . ".pdf"));
+
+        // send email
+        Mail::to($participant->email)->send(new ParticipantRegistered($participant, null, public_path("uploads/id_cards/" . $qr_content  . ".pdf")));
 
         return redirect("/participant/register")->with('status', 'data berhasil disimpan, silahkan cek email anda');
     }

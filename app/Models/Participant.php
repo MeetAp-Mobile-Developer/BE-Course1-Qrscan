@@ -13,5 +13,6 @@ class Participant extends Model
         'name',
         'email',
         'phone',
+        'qr_content',
     ];
 }

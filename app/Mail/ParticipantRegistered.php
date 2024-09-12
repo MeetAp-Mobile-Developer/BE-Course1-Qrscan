@@ -4,7 +4,11 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address;
 
 class ParticipantRegistered extends Mailable
 {
@@ -12,19 +16,49 @@ class ParticipantRegistered extends Mailable
 
     public $participant;
     public $qrCode;
+    public $path;
 
-    public function __construct($participant, $qrCode)
+    public function __construct($participant, $qrCode = null, $path = null)
     {
         $this->participant = $participant;
         $this->qrCode = $qrCode;
+        $this->path = $path;
     }
 
-    public function build()
+    /**
+     * Get the message envelope.
+     */
+    public function envelope(): Envelope
     {
-        return $this->view('emails.participant_registered')
-                    ->with([
-                        'participantName' => $this->participant->name,
-                        'qrCode' => $this->qrCode,
-                    ]);
+        return new Envelope(
+            from: new Address("noreply@meetap.com", "MeetAp mail"),
+            subject: 'Register Participant',
+        );
+    }
+
+    /**
+     * Get the message content definition.
+     */
+    public function content(): Content
+    {
+        return new Content(
+            view: 'emails.participant_registered',
+        );
+    }
+
+    /**
+     * Get the attachments for the message.
+     *
+     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     */
+    public function attachments(): array
+    {
+        if ($this->path == null) {
+            return [];
+        } else {
+            return [
+                Attachment::fromPath($this->path),
+            ];
+        }
     }
 }
