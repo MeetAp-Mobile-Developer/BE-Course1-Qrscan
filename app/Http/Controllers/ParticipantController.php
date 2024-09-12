@@ -31,14 +31,13 @@ class ParticipantController extends Controller
         $participant->email = $request->email;
         $participant->phone = $request->phone;
 
-        $qr_content = "meetap#" . Str::uuid();
+        $qr_content = "meetap-" . time();
         $participant->qr_content = $qr_content;
 
         $result = $participant->save();
 
         // make pdf
         $background = url('assets/image/background-01.jpg');
-        $qr_content = "meetap-" . time();
 
         $barcode = new DNS2D();
         $qr_code = $barcode->getBarcodePNG($qr_content, 'QRCODE', 100, 100, [0, 0, 0], true);
