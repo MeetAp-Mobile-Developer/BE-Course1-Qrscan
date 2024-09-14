@@ -80,7 +80,7 @@ class ScanController extends Controller
         if ($attandance) {
             return response()->json([
                 "status" => "success",
-                "message" => "participant scan success",
+                "message" => $is_id_scan->title ." - ". $request->qr_content . " Success",
             ], 200);
         } else {
             return response()->json([
