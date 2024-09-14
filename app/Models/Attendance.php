@@ -11,8 +11,23 @@ class Attendance extends Model
 
     protected $fillable = [
         'participant_id',
-        'event_id',
-        'attended_at',
+        'id_scan',
+        'scan_at',
+        'scan_by',
     ];
 
+    public function participant()
+    {
+        return $this->belongsTo(Participant::class, "participant_id", "id");
+    }
+
+    public function scan()
+    {
+        return $this->belongsTo(Scan::class, "id_scan", "id_scan");
+    }
+
+    public function user_scan()
+    {
+        return $this->belongsTo(User::class, "scan_by", "id");
+    }
 }
