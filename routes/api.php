@@ -12,4 +12,6 @@ Route::post('/participants', [ParticipantController::class, 'store']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/list_scan', [ScanController::class, 'index']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::post("scan", [ScanController::class, "scan_qr"]);
 });

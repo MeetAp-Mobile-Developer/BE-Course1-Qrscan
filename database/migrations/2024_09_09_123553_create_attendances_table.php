@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->foreignId('participant_id')->constrained('participants');
-            $table->unsignedBigInteger('event_id');
-            $table->timestamp('attended_at')->nullable();
+            $table->unsignedBigInteger('id_scan');
+            $table->timestamp('scan_at')->nullable();
+
+            $table->unsignedBigInteger("scan_by");
+
+            $table->foreign("scan_by")->references("id")->on("users");
             $table->timestamps();
         });
     }
