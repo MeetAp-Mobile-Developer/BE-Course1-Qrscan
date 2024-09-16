@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ParticipantController;
+use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\ParticipantController as ControllersParticipantController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,5 @@ Route::prefix("participant")->name("participant")->group(function () {
     Route::get("/register", [ControllersParticipantController::class, "register"])->name('.register');
     Route::post("/register", [ControllersParticipantController::class, "register_store"]);
 });
+
+Route::get("/report", [ReportController::class, "index"])->name("report");

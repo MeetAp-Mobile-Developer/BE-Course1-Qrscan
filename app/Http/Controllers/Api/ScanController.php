@@ -69,6 +69,19 @@ class ScanController extends Controller
             ], 404);
         }
 
+        $today = now()->startOfDay();
+        $alreadyScan = Attendance::where("participant_id", $is_participant->id)
+            ->where("id_scan", $is_id_scan->id_scan)
+            ->whereDate("scan_at", $today)
+            ->first();
+
+        if ($alreadyScan) {
+            return response()->json([
+                "status" => "ok",
+                "message" =>" Anda sudah scan hari ini!",
+            ]);
+        }
+
         $attandance = new Attendance();
         $attandance->participant_id = $is_participant->id;
         $attandance->id_scan = $is_id_scan->id_scan;

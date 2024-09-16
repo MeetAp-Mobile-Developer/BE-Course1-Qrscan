@@ -14,6 +14,7 @@ class ReportController extends Controller
     public function index()
     {
         $attendance = Attendance::with(["scan:id_scan,title", "participant:id,name,email,phone"])
+            ->orderBy("created_at", "desc")
             ->get();
 
         return view("report", compact("attendance"));
