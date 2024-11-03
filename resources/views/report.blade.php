@@ -27,10 +27,11 @@
             <th>Tanggal Scan</th>
         </tr>
 
-        @foreach ($attendance as $item)
+
             @php
                 $no = 1;
             @endphp
+        @foreach ($attendance as $item)
             <tr>
                 <td>{{ $no++ }}</td>
                 <td>{{ @$item->scan->title }}</td>

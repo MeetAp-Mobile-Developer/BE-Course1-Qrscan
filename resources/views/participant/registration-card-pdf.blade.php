@@ -38,6 +38,7 @@
                 <td>{{ $participant->phone }}</td>
             </tr>
         </table>
+        <h4 style="text-align: center;">Selamat Datang Peserta MeetAp Developer</h4>
     </div>
 </body>
 
