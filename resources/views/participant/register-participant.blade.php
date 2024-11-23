@@ -21,7 +21,7 @@
                 <a href="#" class="h1">Meet<b>Ap</b></a>
             </div>
             <div class="card-body">
-                <p class="login-box-msg">Register a new participant AAA</p>
+                <p class="login-box-msg">Register a new participant baru </p>
 
                 @if (session('status'))
                     <div class="alert alert-success">
